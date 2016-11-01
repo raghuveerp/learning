@@ -26,6 +26,15 @@ var merge = function (array, left, right) {
     }
 };
 
+/**
+ * Merge Sort
+ * Worst-case performance    O(n log n)
+ * Best-case performance    O(n log n) typical, O(n) natural variant
+ * Average performance    O(n log n)
+ * @param input
+ * @returns {*}
+ * @private
+ */
 var _mergeSort = function (input) {
     if (input.length < 2) {
         return;
@@ -66,6 +75,18 @@ var partition = function (input, left, right) {
     return index;
 };
 
+/**
+ * Quick Sort
+ * Worst-case performance    O(n^2)
+ * Best-case performance    O(n log n) (simple partition) or O(n) (three-way partition and equal keys)
+ * Average performance    O(n log n)
+ * Worst-case space complexity    O(n) auxiliary (naive) O(log n) auxiliary
+ * @param input
+ * @param left
+ * @param right
+ * @returns {*}
+ * @private
+ */
 var _quickSort = function (input, left, right) {
     // console.log('Quick Sort ');
     if (left < right) {
@@ -77,6 +98,16 @@ var _quickSort = function (input, left, right) {
     return input;
 };
 
+/**
+ * Insertion Sort
+ * Worst-case performance    О(n^2) comparisons, swaps
+ * Best-case performance    O(n) comparisons, O(1) swaps
+ * Average performance    О(n^2) comparisons, swaps
+ * Worst-case space complexity    О(n) total, O(1) auxiliary
+ * @param input
+ * @returns {*}
+ * @private
+ */
 var _insertionSort = function (input) {
     // console.log('Insertion Sort ');
     for (var i = 1; i < input.length; i++) {
@@ -94,8 +125,15 @@ var _insertionSort = function (input) {
     return input;
 };
 
-
-
+/**
+ * Bubble Sort
+ * Worst-case performance    О(n^2)
+ * Best-case performance    О(n^2)
+ * Average performance    О(n^2)
+ * @param input
+ * @returns {*}
+ * @private
+ */
 var _bubbleSort = function (input) {
     // console.log('Bubble Sort ');
     var length  = input.length;
@@ -119,6 +157,15 @@ var _bubbleSort = function (input) {
     }
 };
 
+/**
+ * Selection Sort:
+ * Worst-case performance    О(n^2)
+ * Best-case performance    О(n^2)
+ * Average performance    О(n^2)
+ * @param input
+ * @returns {*} Sorted list
+ * @private
+ */
 var _selectionSort = function (input) {
     // console.log('Selection Sort ');
     var length = input.length;
@@ -138,8 +185,11 @@ var _selectionSort = function (input) {
     return input;
 };
 
-
-
+/**
+ * Sort Class which will return few types of sorting algorithms
+ * @returns {{insertionSort: _insertionSort, mergeSort: _mergeSort, bubbleSort: _bubbleSort, selectionSort: _selectionSort, quickSort: _quickSort}}
+ * @constructor
+ */
 var Sort = function () {
     return {
         insertionSort: _insertionSort,
