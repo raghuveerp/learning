@@ -2,151 +2,160 @@
  * @author Phull, Raghuveer
  */
 
-var list = [5, 2, 4, 6, 1, 34, 23, 5, 1, 66, 123, 66, 0, 7, 3, 41, 59, 26, 41, 58];
+// Helper Merge function for Merge Sort
+var merge = function (array, left, right) {
+    var i = j = k = 0;
+    while (i < left.length && j < right.length) {
+        if (left[i] <= right[j]) {
+            array[k++] = left[i];
+            i++;
+        } else {
+            array[k++] = right[j];
+            j++;
+        }
+    }
 
-var Sort = function (input) {
-	this.input = input;
+    while (i < left.length) {
+        array[k++] = left[i];
+        i++;
+    }
 
-	// Helper Merge function for Merge Sort
-	var merge = function (array, left, right) {
-		var i = j = k = 0;
-		while (i < left.length && j < right.length) {
-			if (left[i] <= right[j]) {
-				array[k++] = left[i];
-				i++;
-			} else {
-				array[k++] = right[j];
-				j++;
-			}
-		}
+    while (j < right.length) {
+        array[k++] = right[j];
+        j++;
+    }
+};
 
-		while (i < left.length) {
-			array[k++] = left[i];
-			i++;
-		}
+var _mergeSort = function (input) {
+    if (input.length < 2) {
+        return;
+    }
 
-		while (j < right.length) {
-			array[k++] = right[j];
-			j++;
-		}
-	};
+    var mid   = Math.floor(input.length / 2);
+    var left  = input.slice(0, mid);
+    var right = input.slice(mid, input.length);
 
-	// Helper function for Quick sort
-	var partition = function (input, left, right) {
-		var length = input.length;
+    _mergeSort(left);
+    _mergeSort(right);
+    merge(input, left, right);
 
-		var pivot = right;
-		var index = left;
-		for (var i = left; i < right; i++) {
-			if (input[i] <= input[pivot]) {
-				// Swapping 
-				var tmp = input[i];
-				input[i] = input[index];
-				input[index] = tmp;
-				index++;
-			}
-		}
+    return input;
+};
 
-		// Swapping .. 
-		var temp = input[right];
-		input[right] = input[index];
-		input[index] = temp;
+// Helper function for Quick sort
+var partition = function (input, left, right) {
+    var length = input.length;
 
-		return index;
-	};
+    var pivot = right;
+    var index = left;
+    for (var i = left; i < right; i++) {
+        if (input[i] <= input[pivot]) {
+            // Swapping
+            var tmp      = input[i];
+            input[i]     = input[index];
+            input[index] = tmp;
+            index++;
+        }
+    }
 
-	return {
-		insertionSort: function (input) {
-			// console.log('Insertion Sort ');
-			for (var i = 1; i < input.length; i++) {
-				var key = input[i];
-				var j = i - 1;
+    // Swapping ..
+    var temp     = input[right];
+    input[right] = input[index];
+    input[index] = temp;
 
-				while (j >= 0 && input[j] > key) {
-					input[j + 1] = input[j];
-					j--;
-				}
+    return index;
+};
 
-				input[j + 1] = key;
-			}
+var _quickSort = function (input, left, right) {
+    // console.log('Quick Sort ');
+    if (left < right) {
+        var pivot = partition(input, left, right);
+        this.quickSort(input, left, pivot - 1);
+        this.quickSort(input, pivot + 1, right);
+    }
+    // console.log('Quick Sort ');
+    return input;
+};
 
-			return input;
-		},
-		mergeSort: function (input) {
-			// console.log('Merge Sort ');
-			if (input.length < 2) {
-				return;
-			}
+var _insertionSort = function (input) {
+    // console.log('Insertion Sort ');
+    for (var i = 1; i < input.length; i++) {
+        var key = input[i];
+        var j   = i - 1;
 
-			var mid = Math.floor(input.length / 2);
-			var left = input.slice(0, mid);
-			var right = input.slice(mid, input.length);
+        while (j >= 0 && input[j] > key) {
+            input[j + 1] = input[j];
+            j--;
+        }
 
-			this.mergeSort(left);
-			this.mergeSort(right);
-			merge(input, left, right);
+        input[j + 1] = key;
+    }
 
-			return input;
-		},
-		bubbleSort: function (input) {
-			// console.log('Bubble Sort ');
-			var length = input.length;
-			var counter = 0;
+    return input;
+};
 
-			for (var i = 0; i < length - 1; i++) {
-				var flag = 0;
-				for (var j = 0; j < length - i - 1; j++) {
-					if (input[j] > input[j + 1]) {
-						input[j] = input[j] + input[j + 1];
-						input[j + 1] = input[j] - input[j + 1];
-						input[j] = input[j] - input[j + 1];
-						flag = 1;
-					}
-					counter++;
-				}
 
-				if (flag == 0) {
-					return input;
-				}
-			}
-		},
 
-		selectionSort: function (input) {
-			// console.log('Selection Sort ');
-			var length = input.length;
+var _bubbleSort = function (input) {
+    // console.log('Bubble Sort ');
+    var length  = input.length;
+    var counter = 0;
 
-			for (var i = 0; i < length - 1; i++) {
-				var key = i;
-				for (var j = i + 1; j < length; j++) {
-					if (input[j] < input[key]) {
-						key = j;
-					}
-				}
-				var temp = input[i];
-				input[i] = input[key];
-				input[key] = temp;
-			}
+    for (var i = 0; i < length - 1; i++) {
+        var flag = 0;
+        for (var j = 0; j < length - i - 1; j++) {
+            if (input[j] > input[j + 1]) {
+                input[j]     = input[j] + input[j + 1];
+                input[j + 1] = input[j] - input[j + 1];
+                input[j]     = input[j] - input[j + 1];
+                flag         = 1;
+            }
+            counter++;
+        }
 
-			return input;
-		},
-		quickSort : function (input, left, right) {
-			// console.log('Quick Sort ');
-			if (left < right) {
-				var pivot = partition(input, left, right);
-				this.quickSort(input, left, pivot - 1);
-				this.quickSort(input, pivot + 1, right);
-			}
-			// console.log('Quick Sort ');
-			return input;
-		}
-	}
-}
+        if (flag == 0) {
+            return input;
+        }
+    }
+};
 
-var sort = new Sort(list);
+var _selectionSort = function (input) {
+    // console.log('Selection Sort ');
+    var length = input.length;
+
+    for (var i = 0; i < length - 1; i++) {
+        var key = i;
+        for (var j = i + 1; j < length; j++) {
+            if (input[j] < input[key]) {
+                key = j;
+            }
+        }
+        var temp   = input[i];
+        input[i]   = input[key];
+        input[key] = temp;
+    }
+
+    return input;
+};
+
+
+
+var Sort = function () {
+    return {
+        insertionSort: _insertionSort,
+        mergeSort: _mergeSort,
+        bubbleSort: _bubbleSort,
+        selectionSort: _selectionSort,
+        quickSort: _quickSort
+    }
+};
+
+var list = [18, 6, 4, 12, 5, 14, 7, 20, 15, 3, 10, 1, 9, 8, 13, 11, 17, 16, 19, 2];
+var sort = new Sort();
 
 console.log('Input to be sorted: ' + list);
 console.log('Insertion Sorted: ' + sort.insertionSort(list));
 console.log('Merge Sorted: ' + sort.mergeSort(list));
-console.log('Bubble Sorted: ' + sort.bubbleSort( list ) );
-console.log('Selection Sorted: ' + sort.selectionSort( list ) ); 
-console.log('Quick Sorted: ' + sort.quickSort(list, 0 , list.length -1));
+console.log('Bubble Sorted: ' + sort.bubbleSort(list));
+console.log('Selection Sorted: ' + sort.selectionSort(list));
+console.log('Quick Sorted: ' + sort.quickSort(list, 0, list.length - 1));
